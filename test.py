@@ -3,9 +3,11 @@ import pyshark
 import threading
 import pandas as pd
 
+path = "Données\\attaqueslowloris_35min"
+
 df = pd.DataFrame(columns=["packet_length", "header_length", "subtype", "duration", "datarate", "class"])
 # write header to csv
-df.to_csv("Données\\bruteforce_12min.csv", mode='w', header=True)
+df.to_csv(path + ".csv", mode='w', header=True)
 
 def capture_packets():
     loop = asyncio.new_event_loop()
@@ -18,19 +20,19 @@ def capture_packets():
     # # frame 184365 attack terminated
     # end_frame = 184365
     
-    cap = pyshark.FileCapture('Données\\bruteforce_12min.pcap')
-
-    # frame  attack started
-    start_frame = 48794
-    # frame  attack terminated
-    end_frame = 166490
-    
-    # cap = pyshark.FileCapture('Données\\attaqueslowloris_35min.pcapng')
+    # cap = pyshark.FileCapture('Données\\bruteforce_12min.pcap')
 
     # # frame  attack started
-    # start_frame = 1
+    # start_frame = 48794
     # # frame  attack terminated
-    # end_frame = 1
+    # end_frame = 166490
+    
+    cap = pyshark.FileCapture(path + '.pcapng')
+
+    # frame  attack started
+    start_frame = 129008
+    # frame  attack terminated
+    end_frame = 313950
 
     global df
 
@@ -50,13 +52,13 @@ def capture_packets():
         df.loc[i, "datarate"] = p.wlan_radio.data_rate # Mbps
         
         if i >= start_frame and i <= end_frame:
-            df.loc[i, "class"] = "bruteforce"
+            df.loc[i, "class"] = "slowloris"
         else:
             df.loc[i, "class"] = "normal"
 
         if i % 10000 == 0:
             print("Packet n°", i, "done")
-            df.to_csv("Données\\bruteforce_12min.csv", mode='a', header=False)
+            df.to_csv(path + ".csv", mode='a', header=False)
             df = pd.DataFrame(columns=["packet_length", "header_length", "subtype", "duration", "datarate", "class"])
 
     # Close the capture object
