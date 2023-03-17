@@ -3,7 +3,7 @@ import pyshark
 import threading
 import pandas as pd
 
-path = "Données\\attaqueslowloris_35min"
+path = "Données\mdk3_10min"
 
 df = pd.DataFrame(columns=["packet_length", "header_length", "subtype", "duration", "datarate", "class"])
 # write header to csv
@@ -27,12 +27,12 @@ def capture_packets():
     # # frame  attack terminated
     # end_frame = 166490
     
-    cap = pyshark.FileCapture(path + '.pcapng')
+    cap = pyshark.FileCapture(path + '.pcap')
 
     # frame  attack started
-    start_frame = 129008
+    start_frame = 26377
     # frame  attack terminated
-    end_frame = 313950
+    end_frame = 77789
 
     global df
 
@@ -52,7 +52,7 @@ def capture_packets():
         df.loc[i, "datarate"] = p.wlan_radio.data_rate # Mbps
         
         if i >= start_frame and i <= end_frame:
-            df.loc[i, "class"] = "slowloris"
+            df.loc[i, "class"] = "mdk3"
         else:
             df.loc[i, "class"] = "normal"
 
@@ -60,6 +60,8 @@ def capture_packets():
             print("Packet n°", i, "done")
             df.to_csv(path + ".csv", mode='a', header=False)
             df = pd.DataFrame(columns=["packet_length", "header_length", "subtype", "duration", "datarate", "class"])
+
+    df.to_csv(path + ".csv", mode='a', header=False)
 
     # Close the capture object
     cap.close()
