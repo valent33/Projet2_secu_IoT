@@ -3,7 +3,7 @@ import pyshark
 import threading
 import pandas as pd
 
-path = "Données\\bruteforce_test"
+path = "Données\\slowloris_test"
 
 df = pd.DataFrame(columns=["packet_length", "header_length", "subtype", "duration", "datarate", "class"])
 # write header to csv
@@ -16,9 +16,9 @@ def capture_packets():
     cap = pyshark.FileCapture(path + '.pcap')
 
     # frame  attack started
-    start_frame = 6187
+    start_frame = 3987
     # frame  attack terminated
-    end_frame = 47848
+    end_frame = 28441
 
     global df
 
@@ -38,7 +38,7 @@ def capture_packets():
         df.loc[i, "datarate"] = p.wlan_radio.data_rate # Mbps
         
         if i >= start_frame and i <= end_frame:
-            df.loc[i, "class"] = "bruteforce"
+            df.loc[i, "class"] = "slowloris"
         else:
             df.loc[i, "class"] = "normal"
 
