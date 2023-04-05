@@ -16,17 +16,22 @@ model = tf.keras.models.load_model('model_100_7.h5')
 
 # Define the callback function to extract packet features and append to the list
 def packet_callback(packet):
-    packet_dict = {feature: packet[feature].showname.split(': ', 1)[1] for feature in features}
+    packet_dict = {}
     packet_dict['length'] = packet.length
+    try:
+        packet_dict['header_length'] = packet.radiotap.length
+        packet_dict['subtype'] = packet.wlan.fc_type_subtype
+        packet_dict['duration'] = packet.wlan.duration
+        packet_dict['datarate'] = packet.wlan_radio.data_rate
+    except:
+        for layer in packet.layers:
+            print("###############", layer.layer_name, "###############")
+            for field in layer.field_names:
+                print(field, getattr(layer, field))
+                break 
+
     global packet_features
     packet_features.append(packet_dict)
-
-    # global packet_count
-    # packet_count += 1
-    # print(packet_count)
-
-# packet_count = 0
-# packet_limit = 100
 
 # Create an empty list to store the packet features
 packet_features = []

@@ -1,0 +1,13 @@
+model,classe,precision,recall,f1_score
+LSTM_simple,bruteforce,1.00,0.95,0.97
+LSTM_simple,mdk3,1.00,0.95,0.97
+LSTM_simple,slowloris,1.00,0.70,0.83
+LSTM_double,bruteforce,1.00,0.66,0.79
+LSTM_double,mdk3,0.00,0.00,0.00
+LSTM_double,slowloris,1.00,0.70,0.82
+CNN,bruteforce,1.00,0.97,0.99
+CNN,mdk3,1.00,0.71,0.83
+CNN,slowloris,0.98,0.29,0.44
+MLP,bruteforce,0.00,0.00,0.00
+MLP,mdk3,1.00,0.19,0.32
+MLP,slowloris,0.00,0.00,0.00
