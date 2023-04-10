@@ -10,12 +10,30 @@ app = Flask(__name__)# création d'un objet serveur
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'tp2users'#Nom BDD locale
+app.config['MYSQL_DB'] = 'tp2_utilisateurs'#Nom BDD locale
 mysql = MySQL(app) 
 
 
 @app.route('/',methods=['GET','POST'])
 def index():
+     #Fonction permettant de faire la connexion  d'un utilisateur de la base de données
+    if request.method == 'POST':
+       userInfos = request.form
+       cur = mysql.connection.cursor()
+       contenuUsers = cur.execute("SELECT * FROM users WHERE email = %s AND password = %s ", (userInfos['email'],userInfos['password'],))
+       if contenuUsers > 0:
+        #userInfos = cur.fetchone()
+        #return userInfos
+        return redirect('/liste_user')
+       else :
+        error = "E-mail ou mot de passe incorrect!! "
+        return render_template('index.html', error=error)
+    return render_template("index.html")
+
+     
+
+@app.route('/register',methods=['GET','POST'])
+def register():
     #Fonction permettant d'entrer un utilisateur de la base de données
     if request.method == 'POST':
         userInfos = request.form
@@ -27,7 +45,7 @@ def index():
         cur.execute ("INSERT INTO users(nom_user, prenom_user, email, password) VALUES (%s, %s, %s, %s)", (nom_user, prenom_user, email, password))
         mysql.connection.commit()
         return redirect('/liste_user')
-    return render_template("index.html")
+    return render_template("register.html")
 
 
 @app.route('/liste_user')
@@ -37,17 +55,22 @@ def render_infos():
 
 
 def getUsers():
+    #Fonction permettant de recuperer tous les utilisateurs de la base de données
     cur = mysql.connection.cursor()
     contenuUsers = cur.execute("SELECT * FROM users") 
     if contenuUsers > 0:
         userInfos = cur.fetchall()
         return userInfos
+    
         
 def run_server():
     if __name__ == '__main__':
         # Run the app server on localhost:4449
         app.run('localhost', 4449)
 
+@app.route('/register')
+def pageregister():
+    return render_template('register.html')
 
 
 
