@@ -9,18 +9,28 @@
 </head>
 <body>   
     <div class="login">
-        <h1>Enregistrement</h1>
-        
+        <h1>Connexion</h1>
         <form action="" method="post">
-            <label for="nom">
-                <i class="fas fa-user"></i>
-            </label>
-            <input type="text" name="nom_user" placeholder="Nom" id="username" required>
-            <label for="prenom">
-                <i class="fas fa-user"></i>
-            </label>
-            <input type="text" name="prenom_user" placeholder="Prenom" id="password" required>
+            {% if error %}
+            <div class="alert alert-danger text-center" role="alert" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+                <span style="color: red;">{{ error }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="dismissError()">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <script>
+                document.getElementById("email").value = "{{ request.form.email }}";
+                document.getElementById("password").value = "{{ request.form.password }}";
+            </script>
+            {% endif %}
 
+            <script>
+                function dismissError() {
+                var errorAlert = document.querySelector('.alert-danger');
+                errorAlert.style.display = "none";
+                }
+            </script>
+            
             <label for="email">
                 <i class="fas fa-sms"></i>
             </label>
@@ -29,9 +39,16 @@
                 <i class="fas fa-lock"></i>
             </label>
             <input type="password" name="password" placeholder="Password" id="password" required>
+
+
             <div class="msg">{{ msg }}</div>
-            <input type="submit" value="Enregistrer">
+            <input type="submit" value="Connexion">
+            <div class="text-center">
+                Don't have an account? <a href="{{ url_for('register') }}" class="text-dark">Create One</a>
+            </div>
         </form>
+        
     </div>
+    
 </body>
 </html>
