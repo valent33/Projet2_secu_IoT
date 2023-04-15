@@ -11,3 +11,15 @@ CNN,slowloris,0.98,0.29,0.44
 MLP,bruteforce,0.00,0.00,0.00
 MLP,mdk3,1.00,0.19,0.32
 MLP,slowloris,0.00,0.00,0.00
+XGBoost,bruteforce,0.82,0.55,0.66
+XGBoost,mdk3,0.89,1.00,0.94
+XGBoost,slowloris,0.99,0.08,0.15
+SGD,bruteforce,0.00,0.00,0.00
+SGD,mdk3,0.98,0.63,0.77
+SGD,slowloris,0.00,0.00,0.00
+DecisionTree,bruteforce,0.83,0.57,0.68
+DecisionTree,mdk3,0.89,1.00,0.94
+DecisionTree,slowloris,0.76,0.13,0.22
+RandomForest,bruteforce,0.83,0.57,0.68
+RandomForest,mdk3,0.89,1.00,0.94
+RandomForest,slowloris,0.76,0.13,0.22
