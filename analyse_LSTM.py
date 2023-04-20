@@ -7,7 +7,7 @@ import plotly.express as px
 import sys
 
 # load model and scaler
-model = tf.keras.models.load_model('model_100_7.h5')
+model = tf.keras.models.load_model('model_LSTM.h5')
 subtype_encoder = pickle.load(open('subtype_encoder.pickle', 'rb'))
 scaler = pickle.load(open('scaler.pickle', 'rb'))
 
