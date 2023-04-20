@@ -1,22 +1,75 @@
-from mailBDD.app import run_server
+from app import run_server
 import smtplib, ssl
 from email.message import EmailMessage
 import mysql.connector as mc
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 def send_mail(nom, prenom, mail, attaque): 
-    """Fonction qui envoie un mail à une personne et qui permet de donner l'attaque précise"""
-    msg = EmailMessage()
-    msg.set_content(f"Bonjour {nom} {prenom}, nous avons détecté un risque d'attaque {attaque}, sur votre caméra conectée HOSAFE, nous vous conseillons de changer le mot de passe d'accès à celle-ci pour un plus sécurisé! ")
-    msg["Subject"] = "teantative d'intrusion détectée"
-    msg["From"] = "samuel.elard@sfr.fr"
-    msg["To"] = mail
+
+    # me == my email address
+    # you == recipient's email address
+
+
+    # Create message container - the correct MIME type is multipart/alternative.
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Tentative d'intrusion détectée"
+    msg['From'] = "securnetworkiot@gmail.com"
+    msg['To'] = mail
+
+    # Create the body of the message (a plain-text and an HTML version).
+
+    html = f"""
+    <html>
+    <body lang=FR>
+
+    <div class=WordSection1>
+
+    <p class=MsoNormal>Bonjour {nom} {prenom},<o:p></o:p></p>
+
+    <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+    <p class=MsoNormal>Nous vous notifions une possibilité d'attaque de type  {attaque}, en cours sur votre réseau local. Pour la sécurité de celui-ci nous
+    vous conseillons de&nbsp;:<o:p></o:p></p>
+
+    <ul style='margin-top:0cm' type=disc>
+    <li class=MsoListParagraph style='margin-left:0cm;'>Changer
+        le mot de passe d'acces<o:p></o:p></li>
+    <li class=MsoListParagraph style='margin-left:0cm;'>Vérifier
+        via l'interface de votre box les appareils qui y sont authentifiés<o:p></o:p></li>
+    <li class=MsoListParagraph style='margin-left:0cm;'>Réinitialiser
+        les objets connectés de votre réseau.<o:p></o:p></li>
+    </ul>
+
+    <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+    <p class=MsoNormal>En espérant qu'il ne s'agit que d'une regrettable erreur<o:p></o:p></p>
+
+    <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+    <p class=MsoNormal>Votre IDS securnetworkiot<o:p></o:p></p>
+
+
+
+    </div>
+
+    </body>
+
+    </html>
+    """
+
+    part2 = MIMEText(html, 'html')
+
+    # Attach parts into message container.
+    # According to RFC 2046, the last part of a multipart message, in this case
+    # the HTML message, is best and preferred.
+    msg.attach(part2)
 
     context=ssl.create_default_context()
 
-    with smtplib.SMTP_SSL("smtp.sfr.fr", port=465, context=context) as smtp:
-        smtp.login(user=msg["From"],password="XXXX")
+    with smtplib.SMTP_SSL("smtp.gmail.com", port=465, context=context) as smtp:
+        smtp.login(user=msg["From"],password="ykbgciguwynwhkyc")
         smtp.send_message(msg)
 
 
@@ -48,4 +101,4 @@ def pullUsers(conn_db):
         print("liste user vide")
 
 
-send_mails("Apéro")
+send_mails("Slowloris")

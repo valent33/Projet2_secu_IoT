@@ -10,7 +10,7 @@ app = Flask(__name__)# création d'un objet serveur
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'tp2_utilisateurs'#Nom BDD locale
+app.config['MYSQL_DB'] = 'tp2users'#Nom BDD locale
 mysql = MySQL(app) 
 
 
