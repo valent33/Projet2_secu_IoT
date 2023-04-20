@@ -94,10 +94,11 @@ def pred_final(file_path, test=False):
     pred = pd.Series(pred)
     pred = pred.replace(
         {0: 'normal', 1: 'bruteforce', 2: 'slowloris', 3: 'mdk3'})
-    y_test = argmax(y_test, axis=1)
-    y_test = pd.Series(y_test)
-    y_test = y_test.replace(
-        {0: 'normal', 1: 'bruteforce', 2: 'slowloris', 3: 'mdk3'})
+    if test:
+        y_test = argmax(y_test, axis=1)
+        y_test = pd.Series(y_test)
+        y_test = y_test.replace(
+            {0: 'normal', 1: 'bruteforce', 2: 'slowloris', 3: 'mdk3'})
 
     return pred, y_test
 
@@ -186,13 +187,34 @@ def plot_prediction(file_path, test=False):
             reca = recall(pred, y_test, classe)
             f1 = f1_score(pred, y_test, classe)
             print(
-                f'Prédiction de {classe}: précision = {prec:.2f}, recall = {reca:.2f}, f1-score = {f1:.2f}')
-    fig = px.line(pred, title="Prédiction", width=1000, height=300)
-    fig.data[0].name = 'Prédiction'
+                f'Prediction de {classe}: precision = {prec:.2f}, recall = {reca:.2f}, f1-score = {f1:.2f}')
+    fig = px.line(pred, title="Prediction", width=1000, height=300)
+    fig.data[0].name = 'Prediction'
     if test:
-        fig.add_scatter(y=y_test, name='Vraie classe', line=dict(width=5))
-    fig.update_yaxes(title_text='Classe')
-    fig.update_xaxes(title_text='Temps')
+        fig.add_scatter(y=y_test, name='True class', line=dict(width=5))
+    else:
+        # make a decision about potential type of attack
+        pred = pd.Series(pred)
+        pred = pred.replace({0: 'normal', 1: 'bruteforce', 2: 'slowloris', 3: 'mdk3'})
+
+        # count ratio of each class
+        ratio = pred.value_counts(normalize=True)
+        for i in ['normal', 'bruteforce', 'slowloris', 'mdk3']:
+            if i not in ratio:
+                ratio[i] = 0
+        print(ratio)
+        for i in ['normal', 'bruteforce', 'slowloris', 'mdk3']:
+            if ratio['mdk3'] > 0.1:
+                fig.add_annotation(x=0, y=0.7, text="mdk3 attack detected", showarrow=False)
+            elif ratio['slowloris'] > 0.1:
+                fig.add_annotation(x=0, y=0.7, text="slowloris attack detected", showarrow=False)
+            elif ratio['bruteforce'] > 0.1:
+                fig.add_annotation(x=0, y=0.7, text="bruteforce attack detected", showarrow=False)
+            else:
+                fig.add_annotation(x=0, y=0.7, text="no attack detected", showarrow=False)
+
+    fig.update_yaxes(title_text='Class')
+    fig.update_xaxes(title_text='Packets')
     fig.show()
 
 
