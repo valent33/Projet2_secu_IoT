@@ -11,7 +11,7 @@ with open('subtype_encoder.pickle', 'rb') as f:
     subtype_encoder = pickle.load(f)
 with open('scaler.pickle', 'rb') as f:
     scaler = pickle.load(f)
-model = tf.keras.models.load_model('model_100_7.h5')
+model = tf.keras.models.load_model('model_LSTM.h5')
 
 # Define the callback function to extract packet features and append to the list
 def packet_callback(packet):
