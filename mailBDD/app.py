@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import mysql.connector
 from flask_mysqldb import MySQL
-
+import os
 
 
 app = Flask(__name__)# création d'un objet serveur
@@ -16,17 +16,34 @@ mysql = MySQL(app)
 
 @app.route('/',methods=['GET','POST'])
 def index():
-     #Fonction permettant de faire la connexion  d'un utilisateur de la base de données
+    error = None
+    #Fonction permettant de faire la connexion  d'un utilisateur de la base de données
     if request.method == 'POST':
-       userInfos = request.form
-       cur = mysql.connection.cursor()
-       contenuUsers = cur.execute("SELECT * FROM users WHERE email = %s AND password = %s ", (userInfos['email'],userInfos['password'],))
-       if contenuUsers > 0:
-        #userInfos = cur.fetchone()
-        #return userInfos
-        return redirect('/liste_user')
-       else :
-        error = "E-mail ou mot de passe incorrect!! "
+       
+        # try:
+        file = request.files['file']
+        
+        # Save the file to the uploads folder
+        file.save(os.path.join('.\\uploads', file.filename))
+
+        # Run the script with the file path as an argument
+        os.system(f"python ./analyse_LSTM.py .\\uploads\\{file.filename} -test")
+        # except:
+        #     pass
+
+        try:    
+            userInfos = request.form
+            cur = mysql.connection.cursor()
+            contenuUsers = cur.execute("SELECT * FROM users WHERE email = %s AND password = %s ", (userInfos['email'],userInfos['password'],))
+            if contenuUsers > 0:
+                #userInfos = cur.fetchone()
+                #return userInfos
+                return redirect('/liste_user')
+            else :
+                error = "E-mail ou mot de passe incorrect!! "
+        except:
+            pass
+        
         return render_template('index.html', error=error)
     return render_template("index.html")
 
