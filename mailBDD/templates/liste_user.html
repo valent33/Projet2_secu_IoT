@@ -1,7 +1,45 @@
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Liste des utilisateurs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <style>
+        .navbar-brand {
+        	font-weight: bold;
+        }
+	.navbar-right li a {
+        	color: #fff;
+        	margin-left: 10px;
+    	}
 
+    	.navbar-right li a:hover {
+        	color: #d9d9d9;
+    	}
+     </style>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('analyse_fichier') }}">Analyse de fichiers</a>
+            </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Liste des utilisateurs</a></li>
+                <li><a href="#">Déconnexion</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container">
     <h2>La liste des utilisateurs</h2>
@@ -25,9 +63,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                     {% for user in userInfos %}
-                    
+
                     <tr>
                         <td>
                             {{ loop.index }}
@@ -42,10 +80,15 @@
                             {{user[3]}}
                         </td>
                     </tr>
-                    
+
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+</body>
+</html>

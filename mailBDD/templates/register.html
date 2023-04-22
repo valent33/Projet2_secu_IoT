@@ -6,11 +6,41 @@
     <title>Auth Users</title>
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <style>
+    	body {
+        	background-color: #435165;
+        	margin: 0;
+        }
+        .navbar-brand {
+        	font-weight: bold;
+        }
+	.navbar-right li a {
+        	color: #fff;
+        	margin-left: 10px;
+    	}
+	.navbar-right li a:hover {
+    	color: #d9d9d9;
+	}
+</style>
 </head>
-<body>   
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('analyse_fichier') }}">Analyse de fichiers</a>
+            </div>
+    </div>
+</nav>
     <div class="login">
         <h1>Enregistrement</h1>
-        
+
         <form action="" method="post">
             <label for="nom">
                 <i class="fas fa-user"></i>
@@ -31,9 +61,14 @@
             <input type="password" name="password" placeholder="Password" id="password" required>
             <div class="msg">{{ msg }}</div>
             <input type="submit" value="Enregistrer">
+            <div class="text-center">
+                You have an account? <a href="{{ url_for('index') }}" class="text-dark">Connect here</a>
+            </div>
 
-            
+
         </form>
     </div>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 </body>
 </html>
