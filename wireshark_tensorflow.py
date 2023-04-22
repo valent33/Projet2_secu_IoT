@@ -4,7 +4,7 @@ import pickle
 import tensorflow as tf
 from numpy import argmax
 import time
-# from mailBDD.mailing import send_mail
+from mailBDD.mailing import send_mails
 
 # load subtype_encoder, scaler and model
 with open('subtype_encoder.pickle', 'rb') as f:
@@ -16,8 +16,9 @@ model = tf.keras.models.load_model('model_LSTM.h5')
 # Define the callback function to extract packet features and append to the list
 def packet_callback(packet):
     packet_dict = {}
-    packet_dict['length'] = packet.length
+   
     try:
+        packet_dict['length'] = packet.length
         packet_dict['header_length'] = packet.radiotap.length
         packet_dict['subtype'] = packet.wlan.fc_type_subtype
         packet_dict['duration'] = packet.wlan.duration
@@ -33,16 +34,19 @@ def packet_callback(packet):
     packet_features.append(packet_dict)
 
 
-# capture on interface Wi-Fi
-capture = pyshark.LiveCapture(interface='Wi-Fi')
+# Définir le filtre pour pyshark
+capture_filter = "wlan.addr==e0:09:bf:7a:e8:76"
+
+# Démarrer la capture en temps réel
+capture = pyshark.LiveCapture(interface="wlan0", display_filter=capture_filter)
 
 now = time.time()
 while True:
     # Create an empty list to store the packet features
     packet_features = []
 
-    # features = ['radiotap.length', 'wlan.fc_type_subtype', 'wlan.duration', 'wlan_radio.data_rate']
-    features = []
+    features = ['radiotap.length', 'wlan.fc_type_subtype', 'wlan.duration', 'wlan_radio.data_rate']
+    #features = []
     # Apply the packet callback function to each packet
     try :
         capture.apply_on_packets(packet_callback, timeout=10)
@@ -111,13 +115,13 @@ while True:
 
     if ratio['mdk3'] > 0.1:
         print("mdk3 attack detected")
-        # send_mail("Jean", "Neymar", "jean.neymar@gmail.com", "mdk3")
+        send_mails('mdk3')
     elif ratio['slowloris'] > 0.1:
         print("slowloris attack detected")
-        # send_mail("Jean", "Neymar", "jean.neymar@gmail.com", "slowloris")
+        send_mails('Slowloris')
     elif ratio['bruteforce'] > 0.1:
         print("bruteforce attack detected")
-        # send_mail("Jean", "Neymar", "jean.neymar@gmail.com", "bruteforce")
+        send_mails('Bruteforce')
     else:
         print("no attack detected")
 
