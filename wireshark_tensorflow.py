@@ -4,7 +4,8 @@ import pickle
 import tensorflow as tf
 from numpy import argmax
 import time
-from mailBDD.mailing import send_mails
+
+#from mailBDD.mailing import send_mails
 
 # load subtype_encoder, scaler and model
 with open('subtype_encoder.pickle', 'rb') as f:
@@ -18,7 +19,7 @@ def packet_callback(packet):
     packet_dict = {}
    
     try:
-        packet_dict['length'] = packet.length
+        packet_dict['packet_length'] = packet.length
         packet_dict['header_length'] = packet.radiotap.length
         packet_dict['subtype'] = packet.wlan.fc_type_subtype
         packet_dict['duration'] = packet.wlan.duration
@@ -60,13 +61,15 @@ while True:
     df = pd.DataFrame(packet_features)
 
     # Save to csv
-    df.to_csv("temp/capture_test.csv", mode='w', header=True) ## to be removed
-    df = pd.read_csv("temp/capture_test.csv", index_col=0) ## to be removed
+    #df.to_csv("temp/capture_test.csv", mode='w', header=True) ## to be removed
+    #df = pd.read_csv("temp/capture_test.csv", index_col=0) ## to be removed
+    
+    #print(df.head())
 
     ### PREDICTION ###
     df = df[:df.shape[0]-df.shape[0]%100]
 
-    X = df.drop('class', axis=1) ## to be removed
+    X = df#.drop('class', axis=1) ## to be removed
 
     X['subtype'] = subtype_encoder.transform(X['subtype'])
     X = scaler.transform(X)
@@ -115,13 +118,13 @@ while True:
 
     if ratio['mdk3'] > 0.1:
         print("mdk3 attack detected")
-        send_mails('mdk3')
+        #send_mails('mdk3')
     elif ratio['slowloris'] > 0.1:
         print("slowloris attack detected")
-        send_mails('Slowloris')
+        #send_mails('Slowloris')
     elif ratio['bruteforce'] > 0.1:
         print("bruteforce attack detected")
-        send_mails('Bruteforce')
+        #send_mails('Bruteforce')
     else:
         print("no attack detected")
 
