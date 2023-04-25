@@ -10,7 +10,7 @@ app.secret_key = 'IOT'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'tp2users'  # Nom BDD locale
+app.config['MYSQL_DB'] = 'tp2_utilisateurs'  # Nom BDD locale
 app.config['MYSQL_UNIX_SOCKET'] = '/opt/lampp/var/mysql/mysql.sock'
 mysql = MySQL(app)
 
@@ -100,6 +100,10 @@ def render_infos():
 def toliste():
     return render_template('liste_user.html')
 
+
+@app.route('/deconnexion')
+def deconnexion():
+    return redirect('/')
 
 def getUsers():
     # Fonction permettant de recuperer tous les utilisateurs de la base de données
