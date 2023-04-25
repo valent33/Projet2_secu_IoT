@@ -81,7 +81,7 @@ Pour lancer la partie Web, l'utilisateur doit exécuter et laisser tourner le fi
 
 ### Partie détection en direct :
 
-Faire tourner le modèle de détection en direct d'avère assez complexe car l'utilisateur devra satisfaire les conditions suivantes :
+Faire tourner le modèle de détection en direct s'avère assez complexe car l'utilisateur devra satisfaire les conditions suivantes :
 
 - Posséder un adaptateur wifi capable de passer en mode moniteur et de capter les trames réseaux environnantes dans un format possédant un subtype (802.11)
 
@@ -97,4 +97,4 @@ python wireshark_tensorflow.py
 
 ## Auteurs :
 
-Elard Samuel – KadiatouCamara– Marc-Olivier Rancœur – William Arnold Tchuisseu Nanmouo– Pierre Auger - Porchet Valentin
+Elard Samuel – Kadiatou Camara– Marc-Olivier Rancœur – William Arnold Tchuisseu Nanmouo – Pierre Auger - Porchet Valentin
