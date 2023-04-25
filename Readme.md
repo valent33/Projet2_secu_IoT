@@ -50,7 +50,7 @@ Prérequis pour le lancement :
 
 Suivre les étapes : New, Créer une database, Importer, charger le fichier BDD.sql
 
-Il devra ensuite ouvrir le fichier app.py et mettre le nom de sa base de données à la fin de la ligne 13 et à la ligne 86 du fichier mailling.py
+Il devra ensuite ouvrir le fichier app.py et mettre le nom de sa base de données à la fin de la ligne 13 et à la ligne 86 du fichier mailing.py
 
 Explication du lancement :
 
